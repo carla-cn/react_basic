@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+	</head>
+	<body>
+		<div id="test1"></div>
+		<div id="test2"></div>
+		<div id="test3"></div>
+
+		<script type="text/javascript" src="../js/react.development.js"></script>
+		<script type="text/javascript" src="../js/react-dom.development.js"></script>
+		<script type="text/javascript" src="../js/babel.min.js"></script>
+
+		<script type="text/babel">
+			// 创建类式组件
+			class Demo extends React.Component {
+				showData1 = () => {
+					console.log(this)
+					const { input1 } = this
+					alert(input1.value)
+				}
+
+				showData2 = () => {
+					const { input2 } = this
+					alert(input2.value)
+				}
+
+				render() {
+					const { name, age, sex } = this.props
+					return (
+						<div>
+							<input
+								ref={c => {
+									console.log(c)
+									this.input1 = c
+								}}
+								type="text"
+								placeholder="点击按钮提示数据"
+							/>
+							<button onClick={this.showData1}>点我提示左侧的数据</button>
+							<input
+								onBlur={this.showData2}
+								ref={c => (this.input2 = c)}
+								type="text"
+								placeholder="失去焦点提示数据"
+							/>
+						</div>
+					)
+				}
+			}
+
+			// 渲染组件到页面
+			ReactDOM.render(<Demo />, document.getElementById('test1'))
+		</script>
+	</body>
+</html>

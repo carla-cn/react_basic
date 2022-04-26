@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+	</head>
+	<body>
+		<div id="test"></div>
+
+		<script type="text/javascript" src="../js/17.0.1/react.development.js"></script>
+		<script type="text/javascript" src="../js/17.0.1/react-dom.development.js"></script>
+		<script type="text/javascript" src="../js/17.0.1/babel.min.js"></script>
+
+		<script type="text/babel">
+			/**
+			 * 1. 初始化阶段：由ReactDOM.render()触发 --- 初次渲染
+			 *    constructor
+			 *    getDerivedStateFromProps
+			 *    render
+			 *    componentDidMount == 常用：开启定时器、发送网络请求、订阅消息
+			 * 2. 更新阶段
+			 *    getDerivedStateFromProps
+			 *    shouldComponentUpdate
+			 *    getSanpshotBeforeUpdate
+			 *    render
+			 *    componentDidUpdate
+			 * 3. 卸载阶段：由ReactDOM.unmountComponentAtNode触发
+			 *    componentWillUnmount == 常用：关闭定时器、取消订阅消息
+			 * 3. 即将废弃的三个钩子 UNSAFE_componentWillMount  UNSAFE_componentWillUpdate  UNSAFE_componentWillReceiveProps
+			 */
+			class Count extends React.Component {
+				constructor(props) {
+					console.log('Count --- constructor')
+					super(props)
+					this.state = { count: 0 }
+				}
+
+				add = () => {
+					this.setState({ count: this.state.count + 1 })
+				}
+
+				death = () => {
+					ReactDOM.unmountComponentAtNode(document.getElementById('test'))
+				}
+
+				force = () => {
+					this.forceUpdate()
+				}
+
+				static getDerivedStateFromProps(props, state) {
+					// 此方法适用于罕见的用例，即 state 的值在任何时候都取决于 props
+					console.log('Count --- getDerivedStateFromProps', props, state)
+					// return props
+					// return state
+					return null
+				}
+
+				componentDidMount() {
+					console.log('Count --- componentDidMount')
+				}
+
+				componentWillUnmount() {
+					console.log('Count --- componentWillUnmount')
+				}
+
+				shouldComponentUpdate() {
+					console.log('Count --- shouldComponentUpdate')
+					// return false
+					return true
+				}
+
+				// 使得组件能在发生更改之前从 DOM 中捕获一些信息（例如，滚动位置）
+				getSnapshotBeforeUpdate(prevProps, prevState) {
+					// 此用法并不常见，但它可能出现在 UI 处理中，如需要以特殊方式处理滚动位置的聊天线程等
+					console.log('Count --- getSnapshotBeforeUpdate', prevProps, prevState)
+					return '222222222222222222222'
+				}
+
+				componentDidUpdate(preProps, preState, snapshotValue) {
+					console.log('Count --- componentDidUpdate', preProps, preState, snapshotValue)
+				}
+
+				render() {
+					console.log('Count --- render')
+					const { count } = this.state
+					return (
+						<div>
+							<h2>当前求和为：{count}</h2>
+							<button onClick={this.add}>点我加1</button>&nbsp;&nbsp;
+							<button onClick={this.death}>卸载组件</button>&nbsp;&nbsp;
+							<button onClick={this.force}>不想改变任何状态中的数据，强制更新一下</button>
+						</div>
+					)
+				}
+			}
+			ReactDOM.render(<Count count={119} />, document.getElementById('test'))
+		</script>
+	</body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+	</head>
+	<body>
+		<div id="test1"></div>
+		<div id="test2"></div>
+		<div id="test3"></div>
+
+		<script type="text/javascript" src="../js/react.development.js"></script>
+		<script type="text/javascript" src="../js/react-dom.development.js"></script>
+		<script type="text/javascript" src="../js/babel.min.js"></script>
+
+		<script type="text/babel">
+			// 创建类式组件
+			class Person extends React.Component {
+				render() {
+					const { name, age, sex } = this.props
+					return (
+						<ul>
+							<li>姓名：{name}</li>
+							<li>年龄：{age}</li>
+							<li>性别：{sex}</li>
+						</ul>
+					)
+				}
+			}
+			// 渲染组件到页面
+			ReactDOM.render(
+				<Person name="六分打开" age={18} sex="男" />,
+				document.getElementById('test1')
+			)
+			ReactDOM.render(<Person name="六" age={20} sex="女" />, document.getElementById('test2'))
+			// 批量写入props
+			const p = { name: '六分tou', age: 22, sex: '男' }
+			console.log('@', ...p) // 展开运算符在babel和react的支持下可以直接展开一个对象，但是只允许在组件传递参数时使用
+			ReactDOM.render(<Person {...p} />, document.getElementById('test3'))
+		</script>
+	</body>
+</html>

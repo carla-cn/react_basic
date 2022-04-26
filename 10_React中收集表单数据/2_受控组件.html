@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+	</head>
+	<body>
+		<div id="test1"></div>
+		<div id="test2"></div>
+		<div id="test3"></div>
+
+		<script type="text/javascript" src="../js/react.development.js"></script>
+		<script type="text/javascript" src="../js/react-dom.development.js"></script>
+		<script type="text/javascript" src="../js/babel.min.js"></script>
+
+		<script type="text/babel">
+			// 创建类式组件
+			class Demo extends React.Component {
+				state = { username: '', password: '' }
+
+				saveUsername = e => {
+					this.setState({ username: e.target.value })
+				}
+
+				savePwd = e => {
+					this.setState({ password: e.target.value })
+				}
+
+				handleSubmit = e => {
+					e.preventDefault()
+					const { username, password } = this.state
+					alert(`你输入的用户名是：${username}，你输入的密码是：${password}`)
+				}
+
+				render() {
+					const { name, age, sex } = this.props
+					return (
+						<form action="https://www.biadu.com" onSubmit={this.handleSubmit}>
+							用户名：
+							<input type="text" onChange={this.saveUsername} />
+							密码：
+							<input type="password" onChange={this.savePwd} />
+							<button>登录</button>
+						</form>
+					)
+				}
+			}
+
+			// 渲染组件到页面
+			ReactDOM.render(<Demo />, document.getElementById('test1'))
+		</script>
+	</body>
+</html>

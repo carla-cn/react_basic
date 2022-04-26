@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+		<style>
+			.news-list {
+				width: 200px;
+				height: 150px;
+				overflow: auto;
+				background-color: rgb(137, 137, 190);
+			}
+			.news {
+				height: 30px;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="test"></div>
+
+		<script type="text/javascript" src="../js/17.0.1/react.development.js"></script>
+		<script type="text/javascript" src="../js/17.0.1/react-dom.development.js"></script>
+		<script type="text/javascript" src="../js/17.0.1/babel.min.js"></script>
+
+		<script type="text/babel">
+			class NewsList extends React.Component {
+				state = { newsArr: [] }
+
+				componentDidMount() {
+					setInterval(
+						() =>
+							this.setState({
+								newsArr: [`新闻${this.state.newsArr.length + 1}`, ...this.state.newsArr],
+							}),
+						1000
+					)
+				}
+
+				getSnapshotBeforeUpdate(prevProps, prevState) {
+					return this.refs.list.scrollHeight
+				}
+
+				componentDidUpdate(preProps, preState, height) {
+					const list = this.refs.list
+					list.scrollTop += list.scrollHeight - height
+				}
+
+				render() {
+					const { count } = this.state
+					return (
+						<div className="news-list" ref="list">
+							{this.state.newsArr.map((item, i) => (
+								<div key={i} className="news">
+									{item}
+								</div>
+							))}
+						</div>
+					)
+				}
+			}
+			ReactDOM.render(<NewsList count={119} />, document.getElementById('test'))
+		</script>
+	</body>
+</html>
